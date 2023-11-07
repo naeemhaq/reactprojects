@@ -90,25 +90,17 @@ function Menu() {
       ) : (
         <p>We're still working on our menu. Please come back later :)</p>
       )}
-
-      {/* <Pizza
-        name="Pizza Spinaci"
-        ingredients="Tomato, mozarella, spinach, and ricotta cheese"
-        photoName="pizzas/spinaci.jpg"
-        price={10}
-      /> */}
     </main>
   );
 }
 function Pizza({ pizzaObj }) {
-  if (pizzaObj.soldOut) return null;
   return (
     <div className="pizza">
       <img src={pizzaObj.photoName} alt={pizzaObj.name}></img>
       <li>
         <h3>{pizzaObj.name}</h3>
         <p>{pizzaObj.ingredients}</p>
-        <span>{pizzaObj.price + 3}</span>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price + 3}</span>
       </li>
     </div>
   );
