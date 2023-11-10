@@ -1,5 +1,5 @@
 *lock.json
-
+.DS_*
 # Logs
 logs
 *.log
