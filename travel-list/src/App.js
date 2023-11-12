@@ -2,7 +2,7 @@ import { useState } from "react";
 
 const initialItems = [
   { id: 1, description: "Passports", quantity: 2, packed: false },
-  { id: 2, description: "Socks", quantity: 12, packed: true },
+  { id: 2, description: "Socks", quantity: 12, packed: false },
   { id: 3, description: "Charger", quantity: 1, packed: false },
 ];
 
@@ -11,6 +11,10 @@ export default function App() {
   const [items, setItems] = useState(initialItems);
 
   function handleAddItems(item) {
+    /*
+      spread operator to add all items one by one into ...items. It will also add item at the end of ...items array. 
+      check chapter 19 video min location (4:00) of this course.
+    */
     setItems((items) => [...items, item]);
   }
   /*
@@ -26,11 +30,30 @@ export default function App() {
     setItems((items) => items.filter((item) => item.id !== id));
   }
 
+  /*
+    To update one of the objects in the array, we will simply loop over the entire items array using the map property which will then in the end return a 
+    brand new array with the same length of the initial items array. But one of the objects will then, of course, have been updated. So in the iteration, 
+    each of the elements is called an item. And then here is what we're gonna do. So whenever the item has the ID that is equal to the ID that we passed in, 
+    so which means that this is the object that we want to actually update, then we create a brand new object based on the current item, and then we set 
+    packed to the opposite of packed, so of item.packed. And that's it. And if else, so for all the other objects, we will simply return the current item.
+  */
+  function handleToggleItem(id) {
+    setItems((items) =>
+      items.map((item) =>
+        item.id === id ? { ...item, packed: !item.packed } : item
+      )
+    );
+  }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} onDeleteItem={handleDeleteItem} />
+      <PackingList
+        items={items}
+        onDeleteItem={handleDeleteItem}
+        onToggleItems={handleToggleItem}
+      />
       <Stats />
     </div>
   );
@@ -80,21 +103,31 @@ function Form({ onAddItems }) {
   );
 }
 
-function PackingList({ items, onDeleteItem }) {
+function PackingList({ items, onDeleteItem, onToggleItems }) {
   return (
     <div className="list">
       <ul>
         {items.map((item) => (
-          <Item item={item} key={item.id} onDeleteItem={onDeleteItem} />
+          <Item
+            item={item}
+            key={item.id}
+            onDeleteItem={onDeleteItem}
+            onToggleItems={onToggleItems}
+          />
         ))}
       </ul>
     </div>
   );
 }
 
-function Item({ item, onDeleteItem }) {
+function Item({ item, onDeleteItem, onToggleItems }) {
   return (
     <li>
+      <input
+        type="checkbox"
+        value={item.packed}
+        onChange={() => onToggleItems(item.id)}
+      />
       <span style={item.packed ? { textDecoration: "line-through" } : {}}>
         {item.quantity} {item.description}
       </span>
@@ -102,6 +135,7 @@ function Item({ item, onDeleteItem }) {
     </li>
   );
 }
+
 function Stats() {
   return (
     <footer className="stats">
