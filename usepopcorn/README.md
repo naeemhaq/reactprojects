@@ -2,6 +2,8 @@
 
 This project is part of learning fundementals of React. In this I try to create a movie search app where it uses movie APIs to pull in movie and populates a list. A move can be added to watch list and given a personal rating.
 
+- Not finished yet. Data fetching is still not done. I am using demo arrays.
+
 ## Concepts
 
 - Thinking in React Conponents and its reuse
