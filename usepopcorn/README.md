@@ -13,6 +13,20 @@ This project is part of learning fundementals of React. In this I try to create 
 - Creating the Stars component
 - Creating the Expander component
 
+## Component Instace Lifecycle
+
+- Mount initial Render
+  - Component instance is rendered for the first time.
+  - Fresh state and props are created
+- Re-Render
+  - happens when state change
+  - props change
+  - Parent re-renders
+  - Context changes
+- Unmount
+  - component instance is destroyed and removed
+  - state and props are destroyed
+
 ### `npm start`
 
 Runs the app in the development mode.\
