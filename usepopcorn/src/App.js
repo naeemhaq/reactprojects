@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import StarRating from "./StarRating";
 
 const average = (arr) =>
-  arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
+  arr?.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
 function NavBar({ children }) {
   return <nav className="nav-bar">{children}</nav>;
@@ -20,21 +20,24 @@ function Logo() {
 function Search({ query, setQuery }) {
   const inputEl = useRef(null);
 
-  useEffect(function () {
-    //console.log(inputEl.current);
-    if (document.activeElement === inputEl.current) return;
+  useEffect(
+    function () {
+      //console.log(inputEl.current);
+      if (document.activeElement === inputEl.current) return;
 
-    function callback(e) {
-      if (e.code === "Enter") {
-        inputEl.current.focus();
-        setQuery("");
+      function callback(e) {
+        if (e.code === "Enter") {
+          inputEl.current?.focus();
+          setQuery("");
+        }
       }
-    }
 
-    document.addEventListener("keypress", callback);
+      document.addEventListener("keypress", callback);
 
-    return () => document.addEventListener("keydown", callback);
-  }, []);
+      return () => document.addEventListener("keydown", callback);
+    },
+    [setQuery]
+  );
 
   return (
     <input
@@ -68,7 +71,7 @@ export default function App() {
   // const [watched, setWatched] = useState([]);
   const [watched, setWatched] = useState(function () {
     const storedValue = localStorage.getItem("watched");
-    return JSON.parse(storedValue);
+    return storedValue ? JSON.parse(storedValue) : [];
   });
 
   function handleSelectedMovie(Id) {
@@ -80,7 +83,7 @@ export default function App() {
   }
 
   function handleAddWatched(movie) {
-    setWatched((watched) => [...watched, movie]);
+    setWatched((watched) => (!watched ? [movie] : [...watched, movie]));
   }
 
   function handleDeleteWatched(id) {
@@ -235,8 +238,8 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
   const [isLoading, setIsLoading] = useState(false);
   const [userRating, setUserRating] = useState("");
 
-  const isWatched = watched.map((movie) => movie.imdbID).includes(selectedId);
-  const watchedUserRating = watched.find(
+  const isWatched = watched?.map((movie) => movie.imdbID).includes(selectedId);
+  const watchedUserRating = watched?.find(
     (movie) => movie.imdbID === selectedId
   )?.userRating;
 
@@ -369,9 +372,9 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 }
 
 function WatchedSummary({ watched }) {
-  const avgImdbRating = average(watched.map((movie) => movie.imdbRating));
-  const avgUserRating = average(watched.map((movie) => movie.userRating));
-  const avgRuntime = average(watched.map((movie) => movie.runtime));
+  const avgImdbRating = average(watched?.map((movie) => movie.imdbRating));
+  const avgUserRating = average(watched?.map((movie) => movie.userRating));
+  const avgRuntime = average(watched?.map((movie) => movie.runtime));
 
   return (
     <div className="summary">
@@ -379,15 +382,15 @@ function WatchedSummary({ watched }) {
       <div>
         <p>
           <span>#️⃣</span>
-          <span>{watched.length} movies</span>
+          <span>{watched?.length} movies</span>
         </p>
         <p>
           <span>⭐️</span>
-          <span>{avgImdbRating.toFixed(2)}</span>
+          <span>{avgImdbRating?.toFixed(2)}</span>
         </p>
         <p>
           <span>🌟</span>
-          <span>{avgUserRating.toFixed(2)}</span>
+          <span>{avgUserRating?.toFixed(2)}</span>
         </p>
         <p>
           <span>⏳</span>
@@ -401,7 +404,7 @@ function WatchedSummary({ watched }) {
 function WatchedMoviesList({ watched, onDeleteWatched }) {
   return (
     <ul className="list">
-      {watched.map((movie) => (
+      {watched?.map((movie) => (
         <WatchedMovie
           movie={movie}
           key={movie.imdbID}
