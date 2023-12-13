@@ -21,8 +21,19 @@ function Search({ query, setQuery }) {
   const inputEl = useRef(null);
 
   useEffect(function () {
-    console.log(inputEl.current);
-    inputEl.current.focus();
+    //console.log(inputEl.current);
+    if (document.activeElement === inputEl.current) return;
+
+    function callback(e) {
+      if (e.code === "Enter") {
+        inputEl.current.focus();
+        setQuery("");
+      }
+    }
+
+    document.addEventListener("keypress", callback);
+
+    return () => document.addEventListener("keydown", callback);
   }, []);
 
   return (
