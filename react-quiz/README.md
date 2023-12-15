@@ -11,6 +11,8 @@ How can we put together the pieces that need to fit together in order to effecti
 - `reducer`
 - `state` object.
 
+For the quiz project we have questions in the json file and we are using local `npm i json-server` to host a fake api. In the package.json file we specify script: `"server": "json-server --watch data/questions.json --port 8000"` to run the server and then use fetch to get the data from the localserver.
+
 We used [DateCounter](./src/DateCounter.js) component and modified it to remove useState and started using the reducer hook. The [bank account anology](./public/bankAnalogy.png) was very usefull to understand
 ![](./public/bankAnalogy.png)
 
